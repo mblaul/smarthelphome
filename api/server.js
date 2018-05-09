@@ -26,6 +26,6 @@ app.use((err, req, res, next) => {
   res.send(`there was an error: ${err.message}\n code: ${err.status}`)
 });
 
-app.listen(3000, () => {
-  console.log('Express app listening on port 3000')
+app.listen(5000, () => {
+  console.log('Express app listening on port 5000')
 })

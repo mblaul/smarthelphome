@@ -1,3 +1,3 @@
 module.exports.index_get = (req, res, next) => {
-  return res.send("Hello World!");
+  return res.send({ express: 'Hello World!' });
 }
