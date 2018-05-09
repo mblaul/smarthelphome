@@ -1,8 +1,14 @@
 var express = require('express');
 var bodyparser = require('body-parser');
 var session = require('express-session');
-
+var mongoose =require('mongoose');
+// var MongoStore = require('connect-mongo')(session);
 var app = express();
+
+
+mongoose.connect('mongodb://localhost:27017/smarthelphome');
+var database = mongoose.connection;
+database.on('error', console.error.bind(console, "connection error"));
 
 //Set static directory to /public
 app.use(express.static(__dirname + '/public'));
