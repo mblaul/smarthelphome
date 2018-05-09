@@ -14,8 +14,10 @@ const UserSchema = mongoose.Schema({
     }
 });
 
-UserSchema.statics.getAllBooks = function(done){
-    this.find({},(error, users)=>{
+UserSchema.statics.getAllUsers = function(userid,done){
+    this.find({
+        'userid': userid
+    }, (error, users)=>{
         if(error){
             return done(error);
         }else{
