@@ -2,7 +2,6 @@ var express = require('express');
 var bodyparser = require('body-parser');
 var session = require('express-session');
 var mongoose =require('mongoose');
-// var MongoStore = require('connect-mongo')(session);
 var app = express();
 
 
