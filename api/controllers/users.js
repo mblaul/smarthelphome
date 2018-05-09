@@ -8,8 +8,8 @@ module.exports.index_get = (req, res, next) => {
 module.exports.users_get = (req, res, next) => {
     var userid = parseInt(req.params.userid);
     console.log("Requesting information for userid:" + req.params.userid)
-    var allUsersPromise = new Promise((resolve, reject) => {
-        User.getAllUsers(userid, (err,users) => {
+    var oneUserPromise = new Promise((resolve, reject) => {
+        User.getUser(userid, (err,users) => {
           if(err){
             return reject(err);
           }else{
@@ -18,7 +18,7 @@ module.exports.users_get = (req, res, next) => {
         })
       });
     
-    Promise.all([allUsersPromise]).then((results) => {
+    Promise.all([oneUserPromise]).then((results) => {
         return res.send({ users: results[0] });
     }).catch((err)=>{
         return next(err);
