@@ -1,9 +1,8 @@
 const express = require('express');
 const router = express.Router();
-var homeController = require('../controllers/users');
 
-//Home page routes i.e. mysite.com/{route}
-router.get('/api/hello',homeController.index_get);
-router.get('/api/user/:userid',homeController.users_get);
+//API routes i.e. smarthomehelp.com/api/{route}
+//router.get('/api/hello',homeController.index_get);
+router.use('/api/user', require('./user'));
 
 module.exports = router;

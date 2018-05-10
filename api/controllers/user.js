@@ -5,9 +5,11 @@ module.exports.index_get = (req, res, next) => {
     return res.send({ express: 'Hello World!' });
 }
 
-module.exports.users_get = (req, res, next) => {
+module.exports.userid_get = (req, res, next) => {
+
     var userid = parseInt(req.params.userid);
     console.log("Requesting information for userid:" + req.params.userid)
+
     var oneUserPromise = new Promise((resolve, reject) => {
         User.getUser(userid, (err,users) => {
           if(err){
