@@ -2,12 +2,17 @@ var express = require('express');
 var bodyparser = require('body-parser');
 var session = require('express-session');
 var mongoose =require('mongoose');
+var morgan = require('morgan');
+var passport = require('passport');
+var config = require('./config/database');
 var app = express();
 
 
-mongoose.connect('mongodb://localhost:27017/smarthelphome');
-var database = mongoose.connection;
-database.on('error', console.error.bind(console, "connection error"));
+mongoose.connect(config.database);
+//var database = mongoose.connection;
+//database.on('error', console.error.bind(console, "connection error"));
+
+app.use(passport.initialize());
 
 //Set static directory to /public
 app.use(express.static(__dirname + '/public'));
@@ -16,6 +21,11 @@ app.use('/static', express.static(__dirname + '/public'));
 
 //Use pug files for templates/views
 app.set('view engine', 'pug');
+
+app.use(bodyparser.json());       // to support JSON-encoded bodies
+app.use(bodyparser.urlencoded({     // to support URL-encoded bodies
+  extended: true
+})); 
 
 app.use(require('./routes'));
 
