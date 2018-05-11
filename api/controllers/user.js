@@ -1,9 +1,15 @@
 var User = require('../models/user');
 
-
-module.exports.index_get = (req, res, next) => {
-    return res.send({ express: 'Hello World!' });
+module.exports.register_post = (req, res, next) => {
+    return res.send({route : 'Active!'});
 }
+
+
+module.exports.login_post = (req, res, next) => {
+    return res.send({route : 'Active!'});
+}
+
+
 
 module.exports.userid_get = (req, res, next) => {
 
