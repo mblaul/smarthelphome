@@ -23,9 +23,7 @@ app.use('/static', express.static(__dirname + '/public'));
 app.set('view engine', 'pug');
 
 app.use(bodyparser.json());       // to support JSON-encoded bodies
-app.use(bodyparser.urlencoded({     // to support URL-encoded bodies
-  extended: true
-})); 
+app.use(bodyparser.urlencoded({ extended: true })); 
 
 app.use(require('./routes'));
 
