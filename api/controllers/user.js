@@ -7,18 +7,9 @@ var jwt = require('jsonwebtoken');
 
 
 module.exports.me_get = (req, res, next) =>{
-  token = req.headers['authorization'];
+  return res.json('You have arrived!')
   // Route to get who you are using JWTs
-    jwt.verify(token, 'secretkey', (err, authData) => {
-      if(err) {
-        return res.json({ message : 'You are not authorized to be here'});
-      } else {
-        return res.json({ 
-          message : 'You\'re allowed to be here',
-          authData : req.Token
-        });
-      }
-    });
+    
 }
 
 module.exports.register_post = (req, res, next) => {
@@ -53,7 +44,7 @@ module.exports.login_post = (req, res, next) => {
         return res.json({ message : err })
       } else {
         jwt.sign({ user : user }, 'secretkey', (err, token) => {
-          return res.json({message : "You have been logged in." , token : token });
+          return res.json({ message : "You have been logged in." , token : token });
         });
       }
     });
