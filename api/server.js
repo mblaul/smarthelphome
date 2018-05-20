@@ -1,18 +1,14 @@
 var express = require('express');
 var bodyparser = require('body-parser');
 var session = require('express-session');
+var cookieparser = require('cookie-parser');
 var mongoose =require('mongoose');
-var morgan = require('morgan');
 var passport = require('passport');
 var config = require('./config/database');
+
 var app = express();
 
-
 mongoose.connect(config.database);
-//var database = mongoose.connection;
-//database.on('error', console.error.bind(console, "connection error"));
-
-app.use(passport.initialize());
 
 //Set static directory to /public
 app.use(express.static(__dirname + '/public'));

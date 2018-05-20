@@ -3,7 +3,6 @@ var Schema = mongoose.Schema;
 var bcrypt = require('bcrypt-nodejs');
 var config = require('../config/database');
 
-
 //User Schema
 const UserSchema = mongoose.Schema({
     username: {
@@ -19,25 +18,39 @@ const UserSchema = mongoose.Schema({
 
 UserSchema.pre('save', (next) => {
     var user = this;
-    if (this.isModified('password') || this.isNew) {
-        bcrypt.genSalt(10, function (err, salt) {
-            if (err) {
-                return next(err);
-            }
-            bcrypt.hash(user.password, salt, null, (err, hash) => {
-                if (err) {
-                    return next(err);
-                }
-                user.password = hash;
-                next();
-            });
-        });
-    } else {
-        return next();
-    }
+    salt = bcrypt.genSaltSync(10);
+
+    bcrypt.hash(user.password, salt, null, (err, hash) => {
+        if (err) {
+            return next(err);
+        }
+        user.password = hash;
+        next();
+    })
 });
 
-UserSchema.statics.getUser = (userid,done) => {
+UserSchema.statics.authenticate = function (username, password, cb) {
+    User.findOne({ username : username })
+        .exec ((err, user) => {
+            if (err) {
+                return cb(err);
+            } else if (!user) {
+                var err = new Error('User not found');
+                err.status = 401;
+                return cb(err);
+            }
+            bcrypt.compare(password, user.password, (err, result) => {
+                if (result == true) {
+                    return cb(null, user);
+                } else {
+                    return cb();
+                }
+            })
+        });
+}
+
+
+UserSchema.statics.getUser = (userid, done) => {
     this.findOne({
         'userid': userid
     }, (error, users)=>{
@@ -46,7 +59,7 @@ UserSchema.statics.getUser = (userid,done) => {
         }else{
             return done(null, users);
         }
-    })
+    });
 }
 
-const User = module.exports = mongoose.model('users', UserSchema);
+const User = module.exports = mongoose.model('user', UserSchema);
