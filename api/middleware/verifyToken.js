@@ -1,10 +1,15 @@
-module.exports = function(req, res, next) {
-    const bearerHeader = req.header['authorization'];
+//Middlware to handle token verification
 
-    //Check if bearer is undefined
-    if(typeof bearerHeader !== 'undefined') {
-        
+// FORMAT OF TOKEN
+// Authorization: <access_token>
+
+module.exports = (req, res, next) => {
+    const token = req.headers['authorization'];
+    //Check if token is used is undefined
+    if(typeof token !== 'undefined') {
+        return next();
     } else {
-        res.sendStatus(403);
+        //Forbidden
+        return next(res.sendStatus(403));
     }
 }

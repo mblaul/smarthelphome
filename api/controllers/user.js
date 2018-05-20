@@ -5,8 +5,20 @@ var bcrypt = require('bcrypt-nodejs');
 var jwt = require('jsonwebtoken');
 
 
-module.exports.me_get = (res, req, next) =>{
-  //Route to get who you are using JWTs
+
+module.exports.me_get = (req, res, next) =>{
+  token = req.headers['authorization'];
+  // Route to get who you are using JWTs
+    jwt.verify(token, 'secretkey', (err, authData) => {
+      if(err) {
+        return res.json({ message : 'You are not authorized to be here'});
+      } else {
+        return res.json({ 
+          message : 'You\'re allowed to be here',
+          authData : req.Token
+        });
+      }
+    });
 }
 
 module.exports.register_post = (req, res, next) => {
@@ -40,7 +52,9 @@ module.exports.login_post = (req, res, next) => {
         err.status = 401;
         return res.json({ message : err })
       } else {
-        res.json( { message : 'Woohoo you logged in boi!' });
+        jwt.sign({ user : user }, 'secretkey', (err, token) => {
+          return res.json({message : "You have been logged in." , token : token });
+        });
       }
     });
   } else {
