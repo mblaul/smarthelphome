@@ -49,7 +49,6 @@ UserSchema.statics.authenticate = function (username, password, cb) {
         });
 }
 
-
 UserSchema.statics.getUser = (userid, done) => {
     this.findOne({
         'userid': userid

@@ -1,4 +1,4 @@
 module.exports = {
-    'secret':'nodeauthsecret',
-    'database': 'mongodb://localhost:27017/smarthelphome'
+    secret :'nodeauthsecret',
+    database : 'mongodb://localhost:27017/smarthelphome'
   };

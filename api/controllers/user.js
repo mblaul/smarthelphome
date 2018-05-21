@@ -1,13 +1,12 @@
 var User = require('../models/user');
-var passport = require('passport');
-var config = require('../config/database');
+var config = require('../config/config');
 var bcrypt = require('bcrypt-nodejs');
 var jwt = require('jsonwebtoken');
 
 
 module.exports.me_get = (req, res, next) => {
   // Route to get who you are using JWTs
-  return res.json({ message : 'You have arrived!', usertoken : res.locals.usertoken });
+  return res.json({ message : 'Welcome! ' + res.locals.usertoken.username, usertoken : res.locals.usertoken });
 }
 
 module.exports.register_post = (req, res, next) => {
@@ -41,7 +40,7 @@ module.exports.login_post = (req, res, next) => {
         err.status = 401;
         return res.json({ message : err })
       } else {
-        jwt.sign({ user : user }, 'secretkey', (err, token) => {
+        jwt.sign({ user : user }, config.secret, (err, token) => {
           return res.json({ message : "You have been logged in." , token : token });
         });
       }

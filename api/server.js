@@ -1,22 +1,17 @@
 var express = require('express');
 var bodyparser = require('body-parser');
-var session = require('express-session');
-var cookieparser = require('cookie-parser');
 var mongoose =require('mongoose');
-var passport = require('passport');
-var config = require('./config/database');
+
+var db = require('./config/database');
 
 var app = express();
 
-mongoose.connect(config.database);
+mongoose.connect(db.database);
 
 //Set static directory to /public
 app.use(express.static(__dirname + '/public'));
 
 app.use('/static', express.static(__dirname + '/public'));
-
-//Use pug files for templates/views
-app.set('view engine', 'pug');
 
 app.use(bodyparser.json());       // to support JSON-encoded bodies
 app.use(bodyparser.urlencoded({ extended: true })); 
