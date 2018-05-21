@@ -6,23 +6,23 @@ var jwt = require('jsonwebtoken');
 
 
 module.exports = (req, res, next) => {
-    const token = req.headers['authorization'];
+    var token = req.headers['authorization'];
     //Check if token is used is undefined
     if(typeof token !== 'undefined') {
         jwt.verify(token, 'secretkey', (err, authData) => {
             if(err) {
                 return res.json({ message : 'You are not authorized to be here'});
             } else {
-                // res.json({ 
-                //     message : 'You\'re allowed to be here',
-                //     authData
-                // });
-            return next();
+                var usertoken = {
+                    id : authData.user._id,
+                    username : authData.user.username
+                }
+                res.locals.usertoken = usertoken;
+                return next();
             }
           });
-        return next();
     } else {
         //Forbidden
-        return next(res.sendStatus(403));
+        return res.sendStatus(403);
     }
 }

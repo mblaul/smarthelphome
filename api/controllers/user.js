@@ -5,11 +5,9 @@ var bcrypt = require('bcrypt-nodejs');
 var jwt = require('jsonwebtoken');
 
 
-
-module.exports.me_get = (req, res, next) =>{
-  return res.json('You have arrived!')
+module.exports.me_get = (req, res, next) => {
   // Route to get who you are using JWTs
-    
+  return res.json({ message : 'You have arrived!', usertoken : res.locals.usertoken });
 }
 
 module.exports.register_post = (req, res, next) => {
