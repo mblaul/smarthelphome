@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import uuid from "uuid";
 import axios from "axios";
-import logo from "./logo.svg";
 import "./App.css";
 
 class App extends Component {
@@ -21,7 +20,6 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">Welcome to React</h1>
         </header>
         {this.state.todos.map(todo => <li>{todo.title}</li>)}
