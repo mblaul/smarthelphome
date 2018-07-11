@@ -1,12 +1,26 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-var VerifyToken = require('../middleware/verifyToken')
+const passport = require("passport");
 
-var userController = require('../controllers/user')
+var userController = require("../controllers/user");
 
-router.get('/me', VerifyToken, userController.me_get);
-router.post('/register', userController.register_post);
-router.post('/login', userController.login_post);
+// @route   GET api/users/current
+// @desc    Return current user
+// @access  Private
+router.get(
+	"/current",
+	passport.authenticate("jwt", { session: false }),
+	userController.me_get
+);
 
+// @route   POST api/users/register
+// @desc    Register user
+// @access  Public
+router.post("/register", userController.register_post);
+
+// @route   POST api/users/login
+// @desc    Login user / Returning JWT token
+// @access  Public
+router.post("/login", userController.login_post);
 
 module.exports = router;
