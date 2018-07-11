@@ -4,10 +4,10 @@ var bcrypt = require("bcryptjs");
 var jwt = require("jsonwebtoken");
 
 //Load input validation
-const validateRegisterInput = require("../validation/register");
-const validateLoginInput = require("../validation/login");
+const validateRegisterInput = require("../validation/user/register");
+const validateLoginInput = require("../validation/user/login");
 
-module.exports.me_get = (req, res) => {
+module.exports.current_get = (req, res) => {
 	// Route to get who you are using JWTs
 	return res.json({
 		id: req.user.id,

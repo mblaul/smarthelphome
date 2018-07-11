@@ -4,21 +4,21 @@ const passport = require("passport");
 
 var userController = require("../controllers/user");
 
-// @route   GET api/users/current
+// @route   GET api/user/current
 // @desc    Return current user
 // @access  Private
 router.get(
 	"/current",
 	passport.authenticate("jwt", { session: false }),
-	userController.me_get
+	userController.current_get
 );
 
-// @route   POST api/users/register
+// @route   POST api/user/register
 // @desc    Register user
 // @access  Public
 router.post("/register", userController.register_post);
 
-// @route   POST api/users/login
+// @route   POST api/user/login
 // @desc    Login user / Returning JWT token
 // @access  Public
 router.post("/login", userController.login_post);
