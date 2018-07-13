@@ -1,10 +1,15 @@
 var Device = require("../models/Device");
 
 //Load input validation
-const validate = require("../validation/device/register");
+const validateDeviceInput = require("../validation/device/register");
 
 module.exports.register_post = (req, res) => {
-	const errors = {};
+	const { errors, isValid } = validateDeviceInput(req.body);
+
+	//Check validation
+	if (!isValid) {
+		return res.status(400).json(errors);
+	}
 
 	Device.findOne({ macaddress: req.body.macaddress }).then(device => {
 		if (device) {
