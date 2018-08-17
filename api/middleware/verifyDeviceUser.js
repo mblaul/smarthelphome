@@ -11,6 +11,6 @@ module.exports = verifyDeviceUser = (req, res, next) => {
 			});
 		})
 		.catch(() => {
-			return res.json("Boohoo");
+			return res.status(401).send("Unauthorized");
 		});
 };
