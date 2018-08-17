@@ -26,14 +26,18 @@ const DeviceSchema = new Schema({
 		ref: "users",
 		required: true
 	},
-	// authorizedUsers: [
-	// 	{
-	// 		user: {
-	// 			type: Schema.Types.ObjectId,
-	// 			ref: "users"
-	// 		}
-	// 	}
-	// ],
+	authorizedUsers: [
+		{
+			user: {
+				type: Schema.Types.ObjectId,
+				ref: "users"
+			},
+			relation: {
+				type: String,
+				default: "Patient"
+			}
+		}
+	],
 	status: {
 		type: String,
 		default: "Created"

@@ -13,6 +13,24 @@ router.post(
 	deviceController.register_post
 );
 
+// @route   GET api/device/log
+// @desc    Get all device logs from the database
+// @access  Private / Admin only
+router.get(
+	"/log",
+	passport.authenticate("jwt", { session: false }),
+	deviceController.log_get
+);
+
+// @route   GET api/device/log
+// @desc    Get any one device's logs from the database
+// @access  Private / Admin only
+router.get(
+	"/log/:deviceId",
+	passport.authenticate("jwt", { session: false }),
+	deviceController.onedevice_log_get
+);
+
 // @route   POST api/device/log
 // @desc    Add device log to the database
 // @access  Public

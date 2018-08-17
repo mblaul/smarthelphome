@@ -25,7 +25,7 @@ module.exports.register_post = (req, res) => {
 				model: req.body.model,
 				category: req.body.category,
 				owner: req.user.id,
-				authorizedUsers: req.user.id
+				authorizedUsers: { user: req.user.id }
 			});
 
 			newDevice
@@ -40,6 +40,42 @@ module.exports.register_post = (req, res) => {
 				});
 		}
 	});
+};
+
+module.exports.log_get = (req, res) => {
+	let errors = {};
+
+	User.findById(req.user.id)
+		.then(user => {
+			if (!user.isAdmin) {
+				return res.status(401).send("Unauthorized");
+			} else {
+				Log.find().then(logs => {
+					return res.json(logs);
+				});
+			}
+		})
+		.catch(err => {
+			console.log(err);
+			errors.server = "An error occured, please try again";
+			return res.status(500).json(errors);
+		});
+};
+
+module.exports.onedevice_log_get = (req, res) => {
+	let errors = {};
+	// Needs some sort of middleware or authentication for authorized users and admins
+	Device.findById(req.params.deviceId)
+		.then(device => {
+			Log.find({ device: device }).then(deviceLogs => {
+				return res.json(deviceLogs);
+			});
+		})
+		.catch(err => {
+			console.log(err);
+			errors.server = "An error occured, please try again";
+			return res.status(500).json(errors);
+		});
 };
 
 module.exports.log_post = (req, res) => {
