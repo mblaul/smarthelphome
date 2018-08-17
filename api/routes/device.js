@@ -4,6 +4,8 @@ const passport = require("passport");
 
 var deviceController = require("../controllers/device");
 
+const verifyDeviceUser = require("../middleware/verifyDeviceUser");
+
 // @route   POST api/device/register
 // @desc    Add a new device to the database
 // @access  Private
@@ -22,12 +24,13 @@ router.get(
 	deviceController.log_get
 );
 
-// @route   GET api/device/log
+// @route   GET api/device/log/:deviceId
 // @desc    Get any one device's logs from the database
-// @access  Private / Admin only
+// @access  Private / Device user's and admin only
 router.get(
 	"/log/:deviceId",
 	passport.authenticate("jwt", { session: false }),
+	verifyDeviceUser,
 	deviceController.onedevice_log_get
 );
 
