@@ -1,7 +1,9 @@
 var Device = require("../models/Device");
+var Log = require("../models/Log");
 
 //Load input validation
 const validateDeviceInput = require("../validation/device/register");
+const validateDeviceLogInput = require("../validation/device/log");
 
 module.exports.register_post = (req, res) => {
 	const { errors, isValid } = validateDeviceInput(req.body);
@@ -38,4 +40,36 @@ module.exports.register_post = (req, res) => {
 				});
 		}
 	});
+};
+
+module.exports.log_post = (req, res) => {
+	const { errors, isValid } = validateDeviceLogInput(req.body);
+
+	//Check validation
+	if (!isValid) {
+		return res.status(400).json(errors);
+	}
+
+	const newLog = new Log({
+		device: req.body.device,
+		type: req.body.type,
+		status: req.body.status,
+		message: req.body.message
+	});
+
+	newLog
+		.save()
+		.then(log => {
+			Device.findById(log.device).then(device => {
+				device.lastUpdate = log.date;
+				device.status = log.status;
+				device.save();
+			});
+			return res.json(log);
+		})
+		.catch(err => {
+			console.log(err);
+			errors.server = "An error occured, please try again";
+			return res.status(500).json(errors);
+		});
 };

@@ -2,24 +2,21 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const LogSchema = new Schema({
+	device: {
+		type: Schema.Types.ObjectId,
+		ref: "devices",
+		required: true
+	},
+	status: {
+		type: String
+	},
 	type: {
 		type: String,
 		required: true
 	},
-	description: {
+	message: {
 		type: String,
 		required: true
-	},
-	device: {
-		type: Schema.Types.ObjectId,
-		ref: "devices"
-	},
-	device: {
-		type: Schema.Types.ObjectId,
-		ref: "users"
-	},
-	status: {
-		type: String
 	},
 	date: {
 		type: Date,
@@ -27,4 +24,4 @@ const LogSchema = new Schema({
 	}
 });
 
-module.exports = Log = mongoose.model("logs", DeviceSchema);
+module.exports = Log = mongoose.model("logs", LogSchema);

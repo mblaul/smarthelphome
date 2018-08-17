@@ -13,4 +13,9 @@ router.post(
 	deviceController.register_post
 );
 
+// @route   POST api/device/log
+// @desc    Add device log to the database
+// @access  Public
+router.post("/log", deviceController.log_post);
+
 module.exports = router;
