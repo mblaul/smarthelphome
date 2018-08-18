@@ -3,19 +3,25 @@ var bodyparser = require("body-parser");
 const passport = require("passport");
 var mongoose = require("mongoose");
 
-var db = require("./config/database");
+var db = require("./config/keys").mongoURI;
 
 var app = express();
 
-mongoose.connect(db.database);
+mongoose
+	.connect(
+		db,
+		{ useNewUrlParser: true }
+	)
+	.then(() => console.log("MongoDB connected!"))
+	.catch(err => console.log(err));
 
-//Passport middleware
+// Passport middleware
 app.use(passport.initialize());
 
-//Passport Config
+// Passport Config
 require("./config/passport")(passport);
 
-//Set static directory to /public
+// Set static directory to /public
 app.use(express.static(__dirname + "/public"));
 
 app.use("/static", express.static(__dirname + "/public"));
@@ -25,7 +31,7 @@ app.use(bodyparser.urlencoded({ extended: true }));
 
 app.use(require("./routes"));
 
-//Error handling
+// Error handling
 app.use((req, res, next) => {
 	var err = new Error("File not found");
 	err.status = 404;

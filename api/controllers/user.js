@@ -65,33 +65,44 @@ module.exports.login_post = (req, res) => {
 	const email = req.body.email;
 	const password = req.body.password;
 
-	User.findOne({ email: email }).then(user => {
-		// Check to see if the user exists
-		if (!user) {
+	User.findOne({ email: email })
+		.then(user => {
+			// Check to see if the user exists
+			if (!user) {
+				errors.email = "Incorrect username/password combination";
+				return res.status(404).json(errors);
+			}
+
+			bcrypt.compare(password, user.password).then(isMatch => {
+				if (isMatch) {
+					// User matched, create JWT payload
+					const payload = {
+						id: user.id,
+						name: user.name
+					};
+					jwt.sign(
+						payload,
+						config.secret,
+						{ expiresIn: 3600 },
+						(err, token) => {
+							if (err) {
+								console.log(err);
+								errors.server = "An error occured, please try again";
+								return res.status(500).json(errors);
+							}
+							// User has successfully authenticated, give 'em a token
+							res.json({
+								success: true,
+								token: "Bearer " + token
+							});
+						}
+					);
+				}
+			});
+		})
+		// If promise rejected then user doesn't exist
+		.catch(() => {
 			errors.email = "Incorrect username/password combination";
 			return res.status(404).json(errors);
-		}
-
-		bcrypt.compare(password, user.password).then(isMatch => {
-			if (isMatch) {
-				// User matched, create JWT payload
-				const payload = {
-					id: user.id,
-					name: user.name
-				};
-				jwt.sign(payload, config.secret, { expiresIn: 3600 }, (err, token) => {
-					if (err) {
-						console.log(err);
-						errors.server = "An error occured, please try again";
-						return res.status(500).json(errors);
-					}
-					// User has successfully authenticated, give 'em a token
-					res.json({
-						success: true,
-						token: "Bearer " + token
-					});
-				});
-			}
 		});
-	});
 };

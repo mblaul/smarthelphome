@@ -64,7 +64,7 @@ module.exports.log_get = (req, res) => {
 
 module.exports.onedevice_log_get = (req, res) => {
 	let errors = {};
-	// Needs some sort of middleware or authentication for authorized users and admins
+
 	Device.findById(req.params.deviceId)
 		.then(device => {
 			Log.find({ device: device }).then(deviceLogs => {
